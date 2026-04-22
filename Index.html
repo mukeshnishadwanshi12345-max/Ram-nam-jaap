@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ram Jap VIP - Mukesh Nishad</title>
+    <style>
+        :root { --r: #800000; --o: #FF8C00; --g: #FFD700; --w: #FFFBF2; --wine: #4A0000; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Poppins', sans-serif; }
+        
+        body { margin: 0; background: var(--wine); color: white; height: 100vh; overflow: hidden; }
+
+        /* Smooth Scroll Container */
+        .main-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+        }
+        .main-container::-webkit-scrollbar { display: none; }
+
+        section {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            background: var(--w);
+            color: #333;
+        }
+
+        /* Header Info */
+        .top-info { position: fixed; top: 0; width: 100%; background: var(--r); padding: 10px; text-align: center; z-index: 100; border-bottom: 2px solid var(--g); }
+        #clock { color: var(--g); font-weight: bold; font-family: monospace; }
+
+        /* Page 1: Jap UI */
+        .circle { 
+            width: 230px; height: 230px; border: 12px solid var(--o); border-radius: 50%; 
+            background: white; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); margin-bottom: 20px; transition: 0.1s;
+        }
+        .circle:active { transform: scale(0.95); }
+        #num { font-size: 85px; margin: 0; color: var(--r); font-weight: bold; }
+
+        .settings-card { background: #fdf2e9; padding: 15px; border-radius: 20px; width: 90%; max-width: 350px; border: 1px solid var(--o); }
+        .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+        .s-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: var(--r); color: white; font-weight: bold; cursor: pointer; font-size: 12px; }
+
+        /* Page 2: Premanand Maharaj Section */
+        .maharaj-card { background: white; padding: 25px; border-radius: 30px; border: 4px solid var(--o); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 95%; max-width: 380px; }
+        .maharaj-card h2 { color: var(--r); margin: 0; font-size: 20px; border-bottom: 2px solid var(--g); padding-bottom: 10px; }
+        .maharaj-card p { font-style: italic; color: #444; line-height: 1.5; font-size: 15px; margin-top: 15px; }
+        .slogan { color: var(--r); font-weight: bold; display: block; margin-top: 15px; font-size: 18px; }
+
+        /* Page 3: Profile UI */
+        .profile-box { background: white; padding: 40px 20px; border-radius: 30px; width: 90%; max-width: 360px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 2px solid var(--o); }
+        .avatar { width: 90px; height: 90px; background: var(--r); border: 4px solid var(--g); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--g); }
+        .social-link { display: block; padding: 14px; margin-bottom: 10px; border-radius: 12px; text-decoration: none; color: white; font-weight: bold; font-size: 14px; }
+
+        /* Animation */
+        .ram-pop { position: absolute; color: var(--o); font-weight: bold; font-size: 30px; pointer-events: none; animation: fly 0.8s forwards; z-index: 100; }
+        @keyframes fly { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-200px); } }
+
+        .scroll-down { position: absolute; bottom: 20px; animation: bounce 2s infinite; color: var(--r); font-weight: bold; font-size: 11px; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    </style>
+</head>
+<body>
+
+    <div class="top-info">
+        <span id="clock">00:00:00</span>
+    </div>
+
+    <div class="main-container">
+
+        <section id="page1">
+            <div id="tap-zone" style="width:100%; display:flex; flex-direction:column; align-items:center;" onclick="handleTap(event)">
+                <h2 id="mantra" style="color:var(--r); margin-top: 40px;">॥ जय श्री राम ॥</h2>
+                <div class="circle">
+                    <span id="ram-txt" style="color:var(--o); font-weight:bold;">राम राम</span>
+                    <h1 id="num">0</h1>
+                </div>
+                <div style="font-weight: bold; color: var(--r); margin-bottom: 15px; background: white; padding: 5px 20px; border-radius: 50px;">Mala: <span id="m-val">0</span> | Total: <span id="t-val">0</span></div>
+            </div>
+
+            <div class="settings-card">
+                <div class="btn-row">
+                    <button class="s-btn" onclick="setL('hi')">हिन्दी</button>
+                    <button class="s-btn" onclick="setL('en')">English</button>
+                    <button class="s-btn" style="background:#333" onclick="doReset()">Reset</button>
+                </div>
+            </div>
+            <div class="scroll-down">महाराज जी के विचार ↓</div>
+        </section>
+
+        <section>
+            <div class="maharaj-card">
+                <h2>🚩 पूज्य प्रेमानंद जी महाराज</h2>
+                <p>"नाम जप की महिमा अपार है। चाहे मन लगे या न लगे, बस नाम जपते रहो। जैसे अग्नि को बिना जाने भी छुओगे तो हाथ जलेगा, वैसे ही भगवान का नाम बिना भाव के भी लोगे, तो वह अपना काम करेगा और हृदय शुद्ध कर देगा।"</p>
+                <p>"विषयों का चिंतन छोड़कर प्रभु का चिंतन करो, यही जीवन की सार्थकता है।"</p>
+                <span class="slogan">।। राधा केलि कुंज ।।</span>
+            </div>
+            <div class="scroll-down">Developer Info ↓</div>
+        </section>
+
+        <section>
+            <div class="profile-box">
+                <div class="avatar">🚩</div>
+                <h2 style="margin:0; color:var(--r);">Mukesh Nishad</h2>
+                <p style="color:#777; font-weight: bold; font-size: 14px;">Professional Developer</p>
+                <p style="font-size: 11px; color:#555;">"Digital माध्यम से प्रभु की सेवा का एक छोटा सा प्रयास।"</p>
+                
+                <div style="margin-top: 20px;">
+                    <a href="https://www.instagram.com/mr_mukesh__nishad_?igsh=MW0yczJ3Mm40c3RhMA==" class="social-link" style="background: linear-gradient(45deg, #f09433, #bc1888);">Instagram</a>
+                    <a href="https://www.youtube.com/@cinefy_1" class="social-link" style="background: #FF0000;">YouTube</a>
+                    <a href="https://t.me/linkbyxxp" class="social-link" style="background: #0088cc;">Telegram</a>
+                    <a href="mailto:mukeshnishadwanshi12345@gmail.com" class="social-link" style="background: #333;">Email Me</a>
+                </div>
+            </div>
+            <p style="font-size: 10px; margin-top: 20px; color: #999;">ऊपर स्क्रॉल करें ↑</p>
+        </section>
+
+    </div>
+
+    <div id="pop-m" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:white; padding:30px; border-radius:20px; text-align:center; border:5px solid var(--g); width:80%;">
+            <h1>🚩</h1><h2>बधाई हो!</h2><p>आपकी माला पूरी हुई।</p>
+            <button onclick="document.getElementById('pop-m').style.display='none'" style="background:var(--r); color:white; border:none; padding:15px; width:100%; border-radius:10px; font-weight:bold;">JAI SHREE RAM</button>
+        </div>
+    </div>
+
+    <script>
+        let c=0, m=0, t=0, lang='hi';
+
+        function clock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }
+        setInterval(clock, 1000); clock();
+
+        function handleTap(e) {
+            if(e.target.tagName === 'BUTTON') return;
+            c++; t++;
+            if(navigator.vibrate) navigator.vibrate(50);
+            
+            // Floating Ram Effect
+            const ram = document.createElement('div');
+            ram.className = 'ram-pop';
+            ram.innerText = (lang === 'hi') ? "राम" : "RAM";
+            ram.style.left = e.clientX + 'px'; ram.style.top = e.clientY + 'px';
+            document.body.appendChild(ram);
+            setTimeout(() => ram.remove(), 800);
+
+            if(c >= 108) { m++; c=0; document.getElementById('pop-m').style.display='flex'; }
+            update();
+        }
+
+        function update() {
+            document.getElementById('num').innerText = c;
+            document.getElementById('m-val').innerText = m;
+            document.getElementById('t-val').innerText = t;
+        }
+
+        function setL(l) {
+            lang = l;
+            document.getElementById('mantra').innerText = (l==='hi') ? "॥ जय श्री राम ॥" : "|| Jai Shree Ram ||";
+            document.getElementById('ram-txt').innerText = (l==='hi') ? "राम राम" : "RAM RAM";
+        }
+
+        function doReset() { if(confirm("Zero all data?")) { c=0; m=0; t=0; update(); } }
+    </script>
+</body>
+</html>
